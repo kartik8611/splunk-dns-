@@ -1,3 +1,20 @@
 # splunk-dns-
 A hands-on project using Splunk to analyze DNS logs for threat detection, anomaly identification, and cybersecurity insights. Includes queries, dashboards, and real-world use cases.
-#
+#1 SEARCH FOR DNS EVENTS 
+index=_* OR index=* sourcetype=dns
+#2 COUNTING EVERYTHING 
+--lets see how much activity happening, this help us to see internet is busy or free
+index=_* OR index=* sourcetype=dns | stats count by _time
+--this counts every DNS req and puts it into timeline
+#3 TOP IP's
+index=_* OR index=* sourcetype=dns | top srcip
+--this helps us to find most frequent source ip
+#4 TOP DOMIAN
+index=_* OR index=* sourcetype=dns | top domain
+--this help us to find most visited websites
+#5 FILTERING 
+index=_* OR index=* sourcetype=dns domain="*arpa" | table _time, srcip, domain
+--*arpa is used bcz it tells splunk to show domain thaht only end with .arpa
+i can see the domains end with .arpa , those are reverse DNS LOOKUPS which means name of the device at ip address
+and i gpt result starts with 192.168.... which means these are internal ip's.
+in this case virustotl won't help much. In this case we only can do internal investgation
